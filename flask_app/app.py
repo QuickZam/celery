@@ -26,3 +26,4 @@ def get_status(task_id):
 def task_result(task_id):
     result = simple_app.AsyncResult(task_id).result
     return "Result of the Task " + str(result)
+
