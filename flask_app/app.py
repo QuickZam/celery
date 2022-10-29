@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from celery import Celery
 
 app = Flask(__name__)
@@ -6,11 +6,12 @@ simple_app = Celery(
     'simple_worker', broker='redis://redis:6379/0', backend='redis://redis:6379/0')
 
 
-@app.route('/simple_start_task/<links>')
+@app.route('/simple_start_task')
 def call_method(links):
     app.logger.info("Invoking Method ")
     #                        queue name in task folder.function name
-    r = simple_app.send_task('tasks.predict', kwargs={'link': links})
+    link = request.args.get('link')
+    r = simple_app.send_task('tasks.predict', kwargs={'link': link})
     app.logger.info(r.backend)
     return r.id
 
