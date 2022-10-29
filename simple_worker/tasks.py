@@ -47,5 +47,5 @@ def predict(link):
     di = {}
     di['file'] = out
     logger.info('Work Finished ')
-    return jsonify(di)
+    return out 
     
