@@ -38,7 +38,7 @@ def predict(link):
     #     f'http://quickzam.pythonanywhere.com/give_bytes?link=https://www.youtube.com/watch?v={link}') ## python anywhere
 
     response = requests.get(
-        f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link=https://www.youtube.com/watch?v={link}")
+        f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link={link}")
 
     logger.info("Got the output from python anywher")
 
