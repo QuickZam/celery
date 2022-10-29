@@ -20,7 +20,7 @@ def call_method():
 def get_status(task_id):
     status = simple_app.AsyncResult(task_id, app=simple_app)
     print("Invoking Method ")
-    return "Status of the Task " + str(status.state)
+    return str(status.state)
 
 
 @app.route('/simple_task_result/<task_id>')
