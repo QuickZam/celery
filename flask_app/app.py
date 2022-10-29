@@ -7,7 +7,7 @@ simple_app = Celery(
 
 
 @app.route('/simple_start_task')
-def call_method(links):
+def call_method():
     app.logger.info("Invoking Method ")
     #                        queue name in task folder.function name
     link = request.args.get('link')
