@@ -1,4 +1,4 @@
-import time, os 
+import time, os, creds 
 import requests
 from datetime import timedelta
 from celery import Celery
@@ -12,8 +12,10 @@ app = Celery('tasks', broker='redis://redis:6379/0',
              backend='redis://redis:6379/0')
 
    
-api_key =  os.environ['API_KEY']
-model_key = os.environ['MODEL_KEY']
+# api_key =  os.environ['API_KEY']
+# model_key = os.environ['MODEL_KEY']
+api_key = creds.api_key
+model_key = creds.model_key
 
 def create_subtitle(data):
     data = data['modelOutputs'][0]
