@@ -44,8 +44,6 @@ def predict(link):
 
     out = banana.run(api_key, model_key, response.json())
     out = create_subtitle(out)
-    di = {}
-    di['file'] = out
     logger.info('Work Finished ')
     return out 
     
