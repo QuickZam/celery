@@ -23,8 +23,9 @@ def get_status(task_id):
     return str(status.state)
 
 
-@app.route('/simple_task_result/<task_id>')
-def task_result(task_id):
+@app.route('/simple_task_result')
+def task_result():
+    task_id = request.args.get('task_id')
     result = simple_app.AsyncResult(task_id).result
     return str(result)
 
