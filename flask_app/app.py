@@ -16,8 +16,9 @@ def call_method():
     return r.id
 
 
-@app.route('/simple_task_status/<task_id>')
+@app.route('/simple_task_status')
 def get_status(task_id):
+    task_id = request.args.get('task_id') 
     status = simple_app.AsyncResult(task_id, app=simple_app)
     print("Invoking Method ")
     return str(status.state)
