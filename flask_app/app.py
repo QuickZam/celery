@@ -17,6 +17,8 @@ def call_method():
     #                        queue name in task folder.function name
     link = request.args.get('link')
     r = simple_app.send_task('tasks.predict', kwargs={'link': link})
+    global link_yt 
+    link_yt = link 
     app.logger.info(r.backend)
     global id_ 
     id = r.id 
