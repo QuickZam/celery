@@ -16,9 +16,12 @@ def call_method():
     app.logger.info("Invoking Method ")
     #                        queue name in task folder.function name
     link = request.args.get('link')
+    email = request.args.get('email')
     r = simple_app.send_task('tasks.predict', kwargs={'link': link})
     global link_yt 
     link_yt = link 
+    global email_
+    email_ = email
     app.logger.info(r.backend)
     global id_ 
     id = r.id 
@@ -40,7 +43,7 @@ def get_status():
 
             mp3 = base64.b64encode(mp3bytes.getvalue()).decode("ISO-8859-1")
 
-            payload={'youtube_link': link_yt, 'file': mp3, 'id' :id_}  
+            payload={'youtube_link': link_yt, 'file': mp3, 'id' :id_, 'email': email_}  
             files = [(file, mp3bytes)]
             response = requests.request("POST", url, headers=headers, data=payload)#, files=files)
             os.remove("result.txt")
