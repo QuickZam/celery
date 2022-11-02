@@ -28,10 +28,12 @@ def call_method():
     id_ = id 
     return id 
 
-@app.route('/simple_task_status')
+@app.route('/simple_task_status', methods=['POST'])
 def get_status():
     task_id = request.args.get('task_id') 
     status = simple_app.AsyncResult(task_id, app=simple_app)
+
+    
     while True: 
         if str(status.state) == 'SUCCESS':
             result = simple_app.AsyncResult(task_id).result 
@@ -45,9 +47,10 @@ def get_status():
 
             payload={'youtube_link': link_yt, 'file': mp3, 'id' :id_, 'email': email_}  
             files = [(file, mp3bytes)]
-            response = requests.request("POST", url, headers=headers, data=payload)#, files=files)
+            response = requests.request("POST", url, headers=headers, data=payload)
             os.remove("result.txt")
-            return response.text 
+            # return response.text 
+            break 
 
 
 @app.route('/simple_task_result')
