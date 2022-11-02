@@ -14,7 +14,7 @@ app = Celery('tasks', broker='redis://redis:6379/0',
 api_key = creds.api_key
 model_key = creds.model_key
 
-url = "https://chitramai.com/version-test/api/1.1/obj/Data"
+url = "https://chitramai.com/api/1.1/obj/Data"
 headers = {'Authorization': 'Bearer e1a9185d16055bac44068c8ac1f0893a'}
 
 
