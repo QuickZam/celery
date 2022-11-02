@@ -2,6 +2,7 @@ from flask import Flask, request
 from celery import Celery
 import requests, os,  base64
 from io import BytesIO
+from pytube import YouTube 
 
 app = Flask(__name__)
 simple_app = Celery(
@@ -14,15 +15,23 @@ headers = {'Authorization': 'Bearer e1a9185d16055bac44068c8ac1f0893a'}
 @app.route('/simple_start_task')
 def call_method():
     app.logger.info("Invoking Method ")
-    #                        queue name in task folder.function name
+
     link = request.args.get('link')
     email = request.args.get('email')
-    r = simple_app.send_task('tasks.predict', kwargs={'link': link})
+    
+    yt_obj = YouTube(link)
+    yt_title = yt_obj.title  
+
+    r = simple_app.send_task('tasks.predict', kwargs={'link': link, 'yt_link': link, 'email': email, 'youtube_title': yt_title})
+
     global link_yt 
     link_yt = link 
+
     global email_
     email_ = email
+
     app.logger.info(r.backend)
+
     global id_ 
     id = r.id 
     id_ = id 
