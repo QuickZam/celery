@@ -41,8 +41,9 @@ def predict(link, yt_link, email, youtube_title):
     response = requests.get(
         f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link={link}") # digital Ocean flask app
 
-    logger.info("Got the output from python anywher")
+    logger.info("Got the output from python anywhere")
 
+    logger.info("Sent the bytes file to Banana...")
     out = banana.run(api_key, model_key, response.json())
     out = create_subtitle(out)
 
