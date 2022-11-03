@@ -18,11 +18,11 @@ services:
     depends_on:
       - redis
       - flask_app
+    restart: 'on-failure'
 
   redis:
     image: 'redis:4-alpine'
     ports:
       - '6379:6379'
 
-  backend:
-    restart: 'on-failure'
+    
