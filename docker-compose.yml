@@ -23,3 +23,5 @@ services:
     image: 'redis:4-alpine'
     ports:
       - '6379:6379'
+
+  restart: on-failure
