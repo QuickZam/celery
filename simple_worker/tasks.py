@@ -50,9 +50,12 @@ def predict(link, yt_link, email, youtube_title):
     # NEW ----------------------------------------------------------------
     mp3 = base64.b64encode(bytes(str(out), 'utf-8'))
     payload={'youtube_link': yt_link, 'file': mp3, 'email': email, 'youtube_title': youtube_title}  
+    logger.info("Payload is Ready! ")
     response = requests.request("POST", url, headers=headers, data=payload)
     logger.info("Succesfully sent the file to bubble! Check in bubble")
     # END ----------------------------------------------------------------
+
+
 
     logger.info('Work Finished ')
     return out 
