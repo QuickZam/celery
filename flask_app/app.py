@@ -8,9 +8,6 @@ app = Flask(__name__)
 simple_app = Celery(
     'simple_worker', broker='redis://redis:6379/0', backend='redis://redis:6379/0')
 
-url = "https://chitramai.com/api/1.1/obj/Data"
-headers = {'Authorization': 'Bearer e1a9185d16055bac44068c8ac1f0893a'}
-
 
 @app.route('/simple_start_task')
 def call_method():
