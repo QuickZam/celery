@@ -41,7 +41,7 @@ def shorten(url_long):
 @app.task()
 def predict(link, yt_link, email, youtube_title):
     logger.info('Got Request - Starting work ')
-    
+    logger.info(f"Got input paramters, link: {link}, yt_link: {yt_link}, youtube_title :{youtube_title}") 
     if 'amazonaws' in link: 
       link = shorten(link)
      
@@ -51,6 +51,7 @@ def predict(link, yt_link, email, youtube_title):
     model_payload = {'link':link}
     logger.info(f"Model Payload: {model_payload}") 
     logger.info("Sent the bytes file to Banana...")
+    break 
     
     out = banana.run(api_key, model_key, model_payload)
     logger.info("Got the output from banan") 
