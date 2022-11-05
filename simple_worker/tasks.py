@@ -49,8 +49,12 @@ def predict(link, yt_link, email, youtube_title):
     
 
     model_payload = {'link':link}
-    out = banana.run(api_key, model_key, model_payload)
+    logger.info(f"Model Payload: {model_payload}") 
     logger.info("Sent the bytes file to Banana...")
+    
+    out = banana.run(api_key, model_key, model_payload)
+    logger.info("Got the output from banan") 
+    
     out = create_subtitle(out)
 
     logger.info("The output is created and it's preparing to send to bubble io!")
