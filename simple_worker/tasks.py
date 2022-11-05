@@ -14,8 +14,7 @@ app = Celery('tasks', broker='redis://redis:6379/0',
 api_key = creds.api_key
 model_key = creds.model_key
 
-url = "https://chitramai.com/api/1.1/obj/Data"
-headers = {'Authorization': 'Bearer e1a9185d16055bac44068c8ac1f0893a'}
+
 
 
 def create_subtitle(data):
@@ -39,7 +38,10 @@ def shorten(url_long):
     return res.text
 
 @app.task()
-def predict(link, yt_link, email, youtube_title):
+def predict(link, email, youtube_title, unique_id):
+
+    url = f"https://chitramai.com/version-test/api/1.1/obj/metadata/{unique_id}"
+    headers = {'Authorization': 'Bearer e1a9185d16055bac44068c8ac1f0893a'}
   
     logger.info('Got Request - Starting work ')
     logger.info(f"Got input paramters, link: {link}, yt_link: {yt_link}, youtube_title :{youtube_title}") 
@@ -47,8 +49,6 @@ def predict(link, yt_link, email, youtube_title):
       link = shorten(f'https:{link}')
      
     
-    
-
     model_payload = {'link':link}
     logger.info(f"Model Payload: {model_payload}") 
     logger.info("Sent the bytes file to Banana...")
@@ -61,11 +61,13 @@ def predict(link, yt_link, email, youtube_title):
     logger.info("The output is created and it's preparing to send to bubble io!")
 
     mp3 = base64.b64encode(bytes(str(out), 'utf-8'))
-    payload={'youtube_link': yt_link, 'file': mp3, 'email': email, 'youtube_title': youtube_title}  
+
+    payload={'file': mp3, 'Email': email, 'youtube_title': youtube_title, 'status':'Success'}  
 
     logger.info("Payload is Ready! ")
 
-    response = requests.request("POST", url, headers=headers, data=payload)
+    # response = requests.request("POST", url, headers=headers, data=payload) ## older payload 
+    response = requests.request("PATCH", url, headers=headers, data=payload)
 
     logger.info("Succesfully sent the file to bubble! Check in bubble")
 
