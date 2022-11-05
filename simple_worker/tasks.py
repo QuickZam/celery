@@ -51,7 +51,7 @@ def predict(link, yt_link, email, youtube_title):
     model_payload = {'link':link}
     logger.info(f"Model Payload: {model_payload}") 
     logger.info("Sent the bytes file to Banana...")
-    break 
+    return 
     
     out = banana.run(api_key, model_key, model_payload)
     logger.info("Got the output from banan") 
