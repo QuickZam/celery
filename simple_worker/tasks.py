@@ -1,5 +1,5 @@
 import creds 
-import requests, base64
+import requests, base64, urllib
 from datetime import timedelta
 from celery import Celery
 import banana_dev as banana
@@ -31,30 +31,34 @@ def create_subtitle(data):
 
     return all
 
+def shorten(url_long):
+    URL = "http://tinyurl.com/api-create.php"
+
+    url = URL + "?" + urllib.parse.urlencode({"url": url_long})
+    res = requests.get(url) 
+    return res.text
 
 @app.task()
 def predict(link, yt_link, email, youtube_title):
     logger.info('Got Request - Starting work ')
-    # response = requests.get(
-    #     f'http://quickzam.pythonanywhere.com/give_bytes?link=https://www.youtube.com/watch?v={link}') ## python anywhere
+    
 
-    # response = requests.get(
-    #     f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link={link}") # digital Ocean flask app
-
-
-    logger.info("Sent the bytes file to Banana...")
-
-    model_payload = {'link':link}
+    model_payload = {'link':shorten(link)}
     out = banana.run(api_key, model_key, model_payload)
+    logger.info("Sent the bytes file to Banana...")
     out = create_subtitle(out)
+
     logger.info("The output is created and it's preparing to send to bubble io!")
-    # NEW ----------------------------------------------------------------
+
     mp3 = base64.b64encode(bytes(str(out), 'utf-8'))
     payload={'youtube_link': yt_link, 'file': mp3, 'email': email, 'youtube_title': youtube_title}  
+
     logger.info("Payload is Ready! ")
+
     response = requests.request("POST", url, headers=headers, data=payload)
+
     logger.info("Succesfully sent the file to bubble! Check in bubble")
-    # END ----------------------------------------------------------------
+
 
 
 
@@ -62,3 +66,21 @@ def predict(link, yt_link, email, youtube_title):
     return out 
     
 
+
+
+"""
+    # response = requests.get(
+    #     f'http://quickzam.pythonanywhere.com/give_bytes?link=https://www.youtube.com/watch?v={link}') ## python anywhere
+
+    # response = requests.get(
+    #     f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link={link}") # digital Ocean flask app
+
+
+
+
+
+
+
+
+
+"""
