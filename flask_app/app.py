@@ -16,8 +16,12 @@ def call_method():
     link = request.args.get('link')
     email = request.args.get('email')
     
-    yt_obj = YouTube(link)
-    yt_title = yt_obj.title  
+    if 'amazonaws' in link: 
+        yt_title = link.split('/')[-1].replace('%', '_')
+
+    else: 
+        yt_obj = YouTube(link)
+        yt_title = yt_obj.title  
 
     r = simple_app.send_task('tasks.predict', kwargs={'link': link, 'yt_link': link, 'email': email, 'youtube_title': yt_title})
 
