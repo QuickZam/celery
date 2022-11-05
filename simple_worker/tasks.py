@@ -42,8 +42,13 @@ def shorten(url_long):
 def predict(link, yt_link, email, youtube_title):
     logger.info('Got Request - Starting work ')
     
+    if 'amazonaws' in link: 
+      link = shorten(link)
+     
+    
+    
 
-    model_payload = {'link':shorten(link)}
+    model_payload = {'link':link}
     out = banana.run(api_key, model_key, model_payload)
     logger.info("Sent the bytes file to Banana...")
     out = create_subtitle(out)
