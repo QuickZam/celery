@@ -47,7 +47,7 @@ def predict(link, yt_link, email, youtube_title):
     model_payload = {'link':link}
     out = banana.run(api_key, model_key, model_payload)
     out = create_subtitle(out)
-
+    logger.info("The output is created and it's preparing to send to bubble io!")
     # NEW ----------------------------------------------------------------
     mp3 = base64.b64encode(bytes(str(out), 'utf-8'))
     payload={'youtube_link': yt_link, 'file': mp3, 'email': email, 'youtube_title': youtube_title}  
