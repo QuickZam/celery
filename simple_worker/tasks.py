@@ -38,13 +38,14 @@ def predict(link, yt_link, email, youtube_title):
     # response = requests.get(
     #     f'http://quickzam.pythonanywhere.com/give_bytes?link=https://www.youtube.com/watch?v={link}') ## python anywhere
 
-    response = requests.get(
-        f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link={link}") # digital Ocean flask app
+    # response = requests.get(
+    #     f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link={link}") # digital Ocean flask app
 
-    logger.info("Got the output from Digital Ocean flask!")
 
     logger.info("Sent the bytes file to Banana...")
-    out = banana.run(api_key, model_key, response.json())
+
+    model_payload = {'link':link}
+    out = banana.run(api_key, model_key, model_payload)
     out = create_subtitle(out)
 
     # NEW ----------------------------------------------------------------
