@@ -16,7 +16,7 @@ def call_method():
     link = request.args.get('link')
     email = request.args.get('email')
     
-    if 'amazonaws' in link: 
+    if 'tinyurl' in link: 
         yt_title = f"{link.split('/')[-1]}.mp4"
 
     else: 
