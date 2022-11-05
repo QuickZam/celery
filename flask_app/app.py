@@ -17,7 +17,7 @@ def call_method():
     email = request.args.get('email')
     
     if 'amazonaws' in link: 
-        yt_title = f"{link.split('/')[-1]}.mp4"
+        yt_title = link.split('/')[-1].replace('%', '_')
 
     else: 
         yt_obj = YouTube(link)
