@@ -44,7 +44,7 @@ def predict(link, email, youtube_title, unique_id):
     headers = {'Authorization': 'Bearer e1a9185d16055bac44068c8ac1f0893a'}
   
     logger.info('Got Request - Starting work ')
-    logger.info(f"Got input paramters, link: {link}, yt_link: {yt_link}, youtube_title :{youtube_title}") 
+    # logger.info(f"Got input paramters, link: {link}, yt_link: {yt_link}, youtube_title :{youtube_title}") 
     if 'amazonaws' in link: 
       link = shorten(f'https:{link}')
      
