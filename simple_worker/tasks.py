@@ -40,10 +40,11 @@ def shorten(url_long):
 
 @app.task()
 def predict(link, yt_link, email, youtube_title):
+  
     logger.info('Got Request - Starting work ')
     logger.info(f"Got input paramters, link: {link}, yt_link: {yt_link}, youtube_title :{youtube_title}") 
     if 'amazonaws' in link: 
-      link = shorten(link)
+      link = shorten(f'https:{link}')
      
     
     
