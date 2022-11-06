@@ -74,7 +74,7 @@ def predict(link:str, email:str, youtube_title:str, unique_id):
         return out 
     
     except Exception as e: 
-        payload = {'file': 'RXJyb3IgaW4gZmlsZSEg', 'Email': email, 'youtube_title':youtube_title, 'status': 'Error'}
+        payload = {'file': 'RXJyb3IgaW4gZmlsZSEg', 'Email': email, 'youtube_title':youtube_title, 'status': 'Failed'}
         logger.info(f"File is not processed there are some error: {e}")
         response = requests.request("PATCH", url, headers=headers, data=payload)
         return str(e)
