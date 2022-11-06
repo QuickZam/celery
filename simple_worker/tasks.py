@@ -14,8 +14,8 @@ api_key = creds.api_key
 model_key = creds.model_key
 
 # trying with new key! 
-api_key = os.environ.get('API_KEY')
-model_key = os.environ.get('MODEL_KEY')
+# api_key = os.environ.get('API_KEY')
+# model_key = os.environ.get('MODEL_KEY')
 
 def create_subtitle(data:dict) -> str:
     """ Takes the input as banana output and convert to youtube format"""
