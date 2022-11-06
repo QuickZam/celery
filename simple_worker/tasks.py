@@ -77,18 +77,12 @@ def predict(link:str, email:str, youtube_title:str, unique_id):
 
 
 """
-    # response = requests.get(
-    #     f'http://quickzam.pythonanywhere.com/give_bytes?link=https://www.youtube.com/watch?v={link}') ## python anywhere
+# PREVIOUS API's
 
-    # response = requests.get(
-    #     f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link={link}") # digital Ocean flask app
+# response = requests.get(
+#     f'http://quickzam.pythonanywhere.com/give_bytes?link=https://www.youtube.com/watch?v={link}') ## python anywhere
 
-
-
-
-
-
-
-
+# response = requests.get(
+#     f"https://lionfish-app-wynde.ondigitalocean.app/give_bytes?link={link}") # digital Ocean flask app
 
 """
