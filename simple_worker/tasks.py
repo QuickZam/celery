@@ -9,13 +9,20 @@ logger = get_task_logger(__name__)
 app = Celery('tasks', broker='redis://redis:6379/0',
              backend='redis://redis:6379/0')
 
+from dotenv import load_dotenv 
+
+def configure(): 
+    load_dotenv()
+
+configure()
 # api and model key 
-api_key = creds.api_key
-model_key = creds.model_key
+# api_key = creds.api_key
+# model_key = creds.model_key
 
 # trying with new key! 
-# api_key = os.environ.get('API_KEY')
-# model_key = os.environ.get('MODEL_KEY')
+api_key = os.getenv('api_key')
+model_key = os.getenv('model_key')
+
 
 def create_subtitle(data:dict) -> str:
     """ Takes the input as banana output and convert to youtube format"""
@@ -43,8 +50,9 @@ def shorten(url_long:str) -> str:
 @app.task()
 def predict(link:str, email:str, youtube_title:str, unique_id):
 
-    url = f"{creds.url}{unique_id}"
-    headers = {'Authorization': creds.auth}
+
+    url = f"{os.getenv('url')}{unique_id}"
+    headers = {'Authorization': os.getenv('auth')}
   
     logger.info('Got Request - Starting work ')
 
