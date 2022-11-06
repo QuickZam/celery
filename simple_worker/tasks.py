@@ -43,8 +43,8 @@ def shorten(url_long:str) -> str:
 @app.task()
 def predict(link:str, email:str, youtube_title:str, unique_id):
 
-    url = f"https://chitramai.com/api/1.1/obj/metadata/{unique_id}"
-    headers = {'Authorization': 'Bearer e1a9185d16055bac44068c8ac1f0893a'}
+    url = f"{creds.url}{unique_id}"
+    headers = {'Authorization': creds.auth}
   
     logger.info('Got Request - Starting work ')
 
