@@ -1,20 +1,19 @@
-import creds 
-import requests, base64, urllib
-from datetime import timedelta
 from celery import Celery
 import banana_dev as banana
+from datetime import timedelta
+import requests, base64, urllib, creds
 from celery.utils.log import get_task_logger
 
-
+# logging and celery 
 logger = get_task_logger(__name__)
-
 app = Celery('tasks', broker='redis://redis:6379/0',
              backend='redis://redis:6379/0')
 
+# api and model key 
 api_key = creds.api_key
 model_key = creds.model_key
 
-def create_subtitle(data):
+def create_subtitle(data:dict) -> str:
     """ Takes the input as banana output and convert to youtube format"""
     data = data['modelOutputs'][0]
 
@@ -28,13 +27,15 @@ def create_subtitle(data):
 
     return all
 
-def shorten(url_long):
-    URL = "http://tinyurl.com/api-create.php"
 
+def shorten(url_long:str) -> str:
+    URL = "http://tinyurl.com/api-create.php"
     url = URL + "?" + urllib.parse.urlencode({"url": url_long})
     res = requests.get(url) 
+
     return res.text
 
+# backend worker 
 @app.task()
 def predict(link:str, email:str, youtube_title:str, unique_id):
 
@@ -44,7 +45,6 @@ def predict(link:str, email:str, youtube_title:str, unique_id):
     logger.info('Got Request - Starting work ')
 
     try: 
-
         if 'amazonaws' in link: 
             link = shorten(f'https:{link}')
         
