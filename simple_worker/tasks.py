@@ -14,10 +14,8 @@ app = Celery('tasks', broker='redis://redis:6379/0',
 api_key = creds.api_key
 model_key = creds.model_key
 
-
-
-
 def create_subtitle(data):
+    """ Takes the input as banana output and convert to youtube format"""
     data = data['modelOutputs'][0]
 
     all = ""
@@ -38,46 +36,44 @@ def shorten(url_long):
     return res.text
 
 @app.task()
-def predict(link, email, youtube_title, unique_id):
+def predict(link:str, email:str, youtube_title:str, unique_id):
 
     url = f"https://chitramai.com/api/1.1/obj/metadata/{unique_id}"
     headers = {'Authorization': 'Bearer e1a9185d16055bac44068c8ac1f0893a'}
   
     logger.info('Got Request - Starting work ')
-    # logger.info(f"Got input paramters, link: {link}, yt_link: {yt_link}, youtube_title :{youtube_title}") 
-    if 'amazonaws' in link: 
-      link = shorten(f'https:{link}')
-     
+
+    try: 
+
+        if 'amazonaws' in link: 
+            link = shorten(f'https:{link}')
+        
+        model_payload = {'link':link}
+        logger.info(f"Model Payload: {model_payload}") 
+        logger.info("Sent the paytload to banana!")
+        
+        out = banana.run(api_key, model_key, model_payload)
+        logger.info("Got the output from banana") 
+        
+        out = create_subtitle(out)
+
+        logger.info("The output is created and it's preparing to send to bubble io!")
+        mp3 = base64.b64encode(bytes(str(out), 'utf-8'))
+        payload={'file': mp3, 'Email': email, 'youtube_title': youtube_title, 'status':'Success'}  
+
+        logger.info("Payload is Ready! ")
+        response = requests.request("PATCH", url, headers=headers, data=payload)
+
+        logger.info("Succesfully sent the file to bubble! Check in bubble")
+        logger.info('Work Finished ')
+
+        return out 
     
-    model_payload = {'link':link}
-    logger.info(f"Model Payload: {model_payload}") 
-    logger.info("Sent the bytes file to Banana...")
-    
-    out = banana.run(api_key, model_key, model_payload)
-    logger.info("Got the output from banan") 
-    
-    out = create_subtitle(out)
-
-    logger.info("The output is created and it's preparing to send to bubble io!")
-
-    mp3 = base64.b64encode(bytes(str(out), 'utf-8'))
-
-    payload={'file': mp3, 'Email': email, 'youtube_title': youtube_title, 'status':'Success'}  
-
-    logger.info("Payload is Ready! ")
-
-    # response = requests.request("POST", url, headers=headers, data=payload) ## older payload 
-    response = requests.request("PATCH", url, headers=headers, data=payload)
-
-    logger.info("Succesfully sent the file to bubble! Check in bubble")
-
-
-
-
-    logger.info('Work Finished ')
-    return out 
-    
-
+    except Exception as e: 
+        payload = {'file': 'RXJyb3IgaW4gZmlsZSEg', 'Email': email, 'youtube_title':youtube_title, 'status': 'Error'}
+        logger.info(f"File is not processed there are some error: {e}")
+        response = requests.request("PATCH", url, headers=headers, data=payload)
+        return str(e)
 
 
 """
