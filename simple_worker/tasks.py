@@ -1,7 +1,7 @@
 from celery import Celery
 import banana_dev as banana
 from datetime import timedelta
-import requests, base64, urllib, creds
+import requests, base64, urllib, creds, os
 from celery.utils.log import get_task_logger
 
 # logging and celery 
